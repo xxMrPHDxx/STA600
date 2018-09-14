@@ -1,0 +1,60 @@
+.wrapper {
+	padding: 10px;
+	width: 100;
+	height: -webkit-fill-available;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+	margin: 10px;
+}
+
+table, thead, tr {
+	display: grid;
+    grid-auto-columns: 1fr;
+}
+
+td {
+	border-top: 1px solid black;
+	border-left: 1px solid black;
+	text-align: center;
+	grid-row-start: 1;
+	grid-row-end: 1;
+}
+
+.DataCell {
+	text-align: center;
+	border: none;
+	width: 99%;
+	height: 100%;
+	padding: 0;
+}
+
+.sigma {
+	position: relative;
+	top: 1;
+	right: 0;
+	font-size: 2em;
+}
+
+.beta {
+	font-style: italic;
+	font-weight: bold;
+}
+
+table.ResultTable > tr > td {
+	align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+div.OutputGroup {
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding: 10px;
+	background-color: #efefef; 
+}
