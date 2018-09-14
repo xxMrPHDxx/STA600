@@ -12,13 +12,13 @@ function onLoad(){
 	output = document.querySelector("div#Output");
 	table = document.querySelector("table#Data");
 
-	// let thead = document.createElement("thead");
-	// for(let name in columns){
-	// 	let td = document.createElement("td");
-	// 	td.textContent = name;
-	// 	thead.appendChild(td);
-	// }
-	// table.appendChild(thead);
+	let thead = document.createElement("thead");
+	for(let name in columns){
+		let td = document.createElement("td");
+		td.textContent = name;
+		thead.appendChild(td);
+	}
+	table.appendChild(thead);
 }
 
 function initializeTable(){
