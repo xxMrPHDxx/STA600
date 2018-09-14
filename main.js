@@ -12,20 +12,18 @@ function onLoad(){
 	output = document.querySelector("div#Output");
 	table = document.querySelector("table#Data");
 
-	let thead = document.createElement("thead");
-	for(let name in columns){
-		let td = document.createElement("td");
-		td.textContent = name;
-		thead.appendChild(td);
-	}
-	table.appendChild(thead);
+	initializeTable();
 }
 
 function initializeTable(){
 	let thead = document.createElement("thead");
 	for(let name in columns){
 		let td = document.createElement("td");
-		td.textContent = name;
+		if(name.substring(0,1) === "X"){
+			td.innerHTML = `X<sub>${name.substring(1)}</sub>`;
+		}else{
+			td.textContent = name;
+		}
 		thead.appendChild(td);
 	}
 	table.appendChild(thead);
@@ -173,6 +171,11 @@ function findSumSquareCorrelated(){
 
 	if(Y.isEmpty() || X.isEmpty()) return;
 
+	let XY = new Matrix(X.row,X.col+1);
+	XY.map((_,r,c)=>{
+		return (c == 0) ? Y.cell[r][c] : X.cell[r][c-1];
+	});
+
 	let div = document.createElement("div");
 	div.setAttribute("class","OutputGroup");
 
@@ -187,10 +190,10 @@ function findSumSquareCorrelated(){
 	let sumrow = document.createElement("tr");
 	t.appendChild(sumrow);
 
-	let XX = Matrix.mult(Matrix.transpose(X),X);
+	let XX = Matrix.mult(Matrix.transpose(XY),XY);
 	for(let i=0;i<XX.row;i++){
 		for(let j=i;j<XX.col;j++){
-			let name = (i !== j ? `X<sub>${i+1}</sub>X<sub>${j+1}</sub>` : `X<sub>${i+1}</sub><sup>2</sup>`);
+			let name = (i !== j ? (i == 0 ? `X<sub>${j}</sub>Y` : `X<sub>${i}</sub>X<sub>${j}</sub>`) : (i == 0 ? "Y<sup>2</sup>" : `X<sub>${i}</sub><sup>2</sup>`));
 			let sigma = "<span class='sigma'>&Sigma;</span>";
 			let title = sigma + name;
 
