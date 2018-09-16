@@ -13,6 +13,35 @@ function onLoad(){
 	table = document.querySelector("table#Data");
 
 	initializeTable();
+
+	addData();
+}
+
+function addData(){
+	let data = {
+		x: [4,1,2,3,3,4],
+		y: [16,5,10,15,13,22]
+	};
+
+	for(let i=0;i<data.x.length;i++){
+		let tr = document.createElement("tr");
+		
+		let tdY = document.createElement("td");
+		tr.appendChild(tdY);
+		let inputY = document.createElement("input");
+		inputY.setAttribute("class","DataCell");
+		inputY.value = data.y[i];
+		tdY.appendChild(inputY);
+
+		let tdX = document.createElement("td");
+		tr.appendChild(tdX);
+		let inputX = document.createElement("input");
+		inputX.setAttribute("class","DataCell");
+		inputX.value = data.x[i];
+		tdX.appendChild(inputX);
+
+		table.appendChild(tr);
+	}
 }
 
 function initializeTable(){
@@ -223,8 +252,9 @@ function findBeta(){
 	let XX = Matrix.mult(Matrix.transpose(X),X);
 	let XY = Matrix.mult(Matrix.transpose(X),Y);
 
-	let a
+	let a;
 	try{
+		console.log(XX.cell);
 		a = Matrix.inverse(XX);
 	}catch(e){
 		alert(e.message);

@@ -83,6 +83,15 @@ class Matrix {
 	static cofactor(m){
 		if(!(m instanceof Matrix)) throw new Error("Invalid Argument! Argument 1 must be a matrix");
 		if(m.row != m.col) throw new Error("Invalid operation! The matrix doesn't have an cofactor");
+		if(m.row === 2 && m.col === 2){
+			let matrix = new Matrix(m.row,m.col);
+			let [a,b,c,d] = [].concat.apply([],m.cell);
+			matrix.cell = [
+				[d,-c],
+				[-b,a]
+			];
+			return matrix;
+		}
 		let ret = new Matrix(m.row,m.col);
 		ret.map((_,row,col)=>{
 			let temp = new Matrix(m.row-1,m.col-1);
@@ -98,9 +107,16 @@ class Matrix {
 	static inverse(m){
 		if(!(m instanceof Matrix)) throw new Error("Invalid Argument! Argument 1 must be a matrix");
 		let inv = Matrix.cofactor(m);
+
+		let temp = new Matrix(inv.row,inv.col);
+		temp.map((_,i,j)=>inv.cell[i][j]);
+		console.log(temp);
+
 		let det = Matrix.det(m);
 		if(m.row != m.col || det == 0) throw new Error("Invalid operation! The matrix doesn't have an inverse");
-		inv.map(cell=>cell/det);
+		inv.map(cell=>{
+			return cell/det;
+		});
 		return inv;
 	}
 	static fromArray(arr){
