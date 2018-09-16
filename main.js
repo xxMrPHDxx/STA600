@@ -7,6 +7,11 @@ const rows = [];
 
 let numIndependent = 1;
 
+function round(value,nearest=0){
+	if(nearest < 0) nearest = 0;
+	return Math.round(value*Math.pow(10,nearest))/Math.pow(10,nearest);
+}
+
 function onLoad(){
 	input = document.querySelector("input#RawInput");
 	output = document.querySelector("div#Output");
@@ -14,7 +19,7 @@ function onLoad(){
 
 	initializeTable();
 
-	addData();
+	// addData();
 }
 
 function addData(){
@@ -262,6 +267,7 @@ function findBeta(){
 	}
 
 	let beta = Matrix.mult(a,XY);
+	beta.map(cell=>round(cell,4));
 
 	let div = document.createElement("div");
 	div.setAttribute("class","OutputGroup");
