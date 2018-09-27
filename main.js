@@ -18,8 +18,6 @@ function onLoad(){
 	table = document.querySelector("table#Data");
 
 	initializeTable();
-
-	// addData();
 }
 
 function addData(){
@@ -218,7 +216,6 @@ function findBeta(){
 
 	let a;
 	try{
-		console.log(XX.cell);
 		a = Matrix.inverse(XX);
 	}catch(e){
 		alert(e.message);

@@ -107,7 +107,7 @@ class Matrix {
 				let cc = c < col ? c : c+1;
 				return m.cell[rr][cc];
 			});
-			return Matrix.det(temp);
+			return ((row*ret.col + col) % 2 == 0 ? 1 : -1) * Matrix.det(temp);
 		});
 		return ret;
 	}
