@@ -129,7 +129,7 @@ function findSum(){
 	div.setAttribute("class","OutputGroup");
 
 	let title = document.createElement("h3");
-	title.textContent = "Sum Square Table";
+	title.textContent = "Sum Table";
 	div.appendChild(title);
 
 	let t = document.createElement("table");
@@ -146,7 +146,7 @@ function findSum(){
 		let title = sigma + name;
 
 		let headTD = document.createElement("td");
-		headTD.innerHTML = title;
+		headTD.innerHTML = "<span class='SummationGroup'>"+title+"</span>";
 		th.appendChild(headTD);
 		let valueTD = document.createElement("td");
 		valueTD.textContent = sum;
@@ -161,47 +161,6 @@ function findSum(){
 function findSumSquare(){
 	let Y = getDependent();
 	let X = getIndependents();
-	let sumY = Y.reduceRow((a,b) => a+Math.pow(b,2),0);
-	let sumX = X.reduceRow((a,b) => a+Math.pow(b,2),0);
-
-	if(sumY.length == 0 || sumX.length == 0) return;
-
-	let div = document.createElement("div");
-	div.setAttribute("class","OutputGroup");
-
-	let title = document.createElement("h3");
-	title.textContent = "Sum Square Table";
-	div.appendChild(title);
-
-	let t = document.createElement("table");
-	t.setAttribute("class","ResultTable");
-	let th = document.createElement("thead");
-	t.appendChild(th);
-	let sumrow = document.createElement("tr");
-	t.appendChild(sumrow);
-
-	[...sumY,...sumX].forEach((sum,i) => {
-		let name = "Y";
-		if(i != 0) name = `X<sup>2</sup><sub>${i}</sub>`;
-		let sigma = "<span class='sigma'>&Sigma;</span>";
-		let title = sigma + name;
-
-		let headTD = document.createElement("td");
-		headTD.innerHTML = title;
-		th.appendChild(headTD);
-		let valueTD = document.createElement("td");
-		valueTD.textContent = sum;
-		sumrow.appendChild(valueTD);
-	});
-
-	div.appendChild(t);
-
-	output.appendChild(div);
-}
-
-function findSumSquareCorrelated(){
-	let Y = getDependent();
-	let X = getIndependents();
 
 	if(Y.isEmpty() || X.isEmpty()) return;
 
@@ -214,7 +173,7 @@ function findSumSquareCorrelated(){
 	div.setAttribute("class","OutputGroup");
 
 	let title = document.createElement("h3");
-	title.textContent = "Sum Square Correlated Table";
+	title.textContent = "Sum Square Table";
 	div.appendChild(title);
 
 	let t = document.createElement("table");
@@ -232,7 +191,7 @@ function findSumSquareCorrelated(){
 			let title = sigma + name;
 
 			let headTD = document.createElement("td");
-			headTD.innerHTML = title;
+			headTD.innerHTML = "<span class='SummationGroup'>"+title+"</span>";
 			th.appendChild(headTD);
 			let valueTD = document.createElement("td");
 			valueTD.textContent = XX.cell[i][j];
@@ -295,6 +254,95 @@ function findBeta(){
 		valueTD.textContent = beta.cell[i][j];
 		sumrow.appendChild(valueTD);
 	}
+
+	div.appendChild(t);
+
+	output.appendChild(div);
+}
+
+function showAnova(){
+	let Y = getDependent();
+	let x = getIndependents();
+
+	let X = new Matrix(x.row,x.col+1);
+	X.map((_,row,col)=>{
+		return (col == 0) ? 1 : x.cell[row][col-1];
+	});
+
+	let XX = Matrix.mult(Matrix.transpose(X),X);
+	let XY = Matrix.mult(Matrix.transpose(X),Y);
+
+	let a;
+	try{
+		a = Matrix.inverse(XX);
+	}catch(e){
+		alert(e.message);
+		return;
+	}
+
+	let beta = Matrix.mult(a,XY);
+	let yhat = Matrix.mult(X,beta);
+	let error = Matrix.sub(Y,yhat);
+
+	const SSE = error.reduce((a,b)=>a+Math.pow(b,2),0);
+
+	let N = Y.row;
+	let ybar = Y.reduce((a,b)=>a+b,0) / N;
+	const SST = Y.reduce((a,b)=>a + Math.pow(b-ybar,2),0);
+
+	const SSR = SST - SSE;
+
+	const dfR = N - x.col;
+	const MSR = SSR / dfR;
+	const dfE = x.col;
+	const MSE = SSE / dfE;
+	const dfT = dfR + dfE;
+
+	let div = document.createElement("div");
+	div.setAttribute("class","OutputGroup");
+
+	let title = document.createElement("h3");
+	title.textContent = "ANOVA Table";
+	div.appendChild(title);
+
+	let t = document.createElement("table");
+	t.setAttribute("class","ResultTable");
+
+	let thead = document.createElement("thead");
+	thead.innerHTML = `
+		<tr>
+			<td>Source of Variation</td>
+			<td>Sum Square</td>
+			<td>df</td>
+			<td>Mean Square</td>
+			<td>F</td>
+		</tr>
+	`;
+	t.appendChild(thead);
+
+	let tbody = document.createElement("tbody");
+	tbody.innerHTML = `
+		<tr>
+			<td>Regression</td>
+			<td>${round(SSR,3)}</td>
+			<td>${dfR}</td>
+			<td>${round(MSR,3)}</td>
+			<td rowspan="3">${round(MSR/MSE,3)}</td>
+		</tr>
+		<tr>
+			<td>Error</td>
+			<td>${round(SSE,3)}</td>
+			<td>${dfE}</td>
+			<td>${round(MSE,3)}</td>
+		</tr>
+		<tr>
+			<td>Total</td>
+			<td>${round(SST,3)}</td>
+			<td>${dfT}</td>
+			<td></td>
+		</tr>
+	`;
+	t.appendChild(tbody);
 
 	div.appendChild(t);
 

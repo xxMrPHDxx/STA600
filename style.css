@@ -1,60 +1,71 @@
+* {
+	padding: 0;
+	font-family: monospace;
+	text-align: center;
+}
+
 .wrapper {
-	padding: 10px;
-	width: 100;
+	width: 100%;
 	height: -webkit-fill-available;
 }
 
-table {
+div.wrapper > * {
+	padding: 10px;
+}
+
+table, tr, td { 
 	border-collapse: collapse;
-	border-spacing: 0;
-	border-bottom: 1px solid black;
-	border-right: 1px solid black;
-	margin: 10px;
 }
 
-table, thead, tr {
-	display: grid;
-    grid-auto-columns: 1fr;
+table {
+	width: 100%;
 }
 
-td {
-	border-top: 1px solid black;
-	border-left: 1px solid black;
-	text-align: center;
-	grid-row-start: 1;
-	grid-row-end: 1;
+div#Output table {
+	margin: 20px 0;
 }
 
-.DataCell {
-	text-align: center;
-	border: none;
-	width: 99%;
-	height: 100%;
+td { 
+	border: 1px solid black;
+}
+
+thead > td {
+	padding: 5px;
+}
+
+td.DataCell {
 	padding: 0;
 }
 
-.sigma {
-	position: relative;
-	top: 1;
-	right: 0;
-	font-size: 2em;
+input.DataCell {
+	border: 0px solid;
+	background-color: #efefef;
+	width: 100%;
+	height: 25px;
 }
 
-.beta {
-	font-style: italic;
-	font-weight: bold;
-}
-
-table.ResultTable > tr > td {
-	align-items: center;
-    display: flex;
-    justify-content: center;
-}
-
-div.OutputGroup {
-	text-align: center;
-	margin-top: 20px;
+table {
 	margin-bottom: 20px;
+}
+
+.OutputGroup {
 	padding: 10px;
-	background-color: #efefef; 
+	background-color: #efefef;
+	margin-top: 20px;
+}
+
+.sigma {
+    position: relative;
+    font-size: 30px;
+    top: 6px;
+}
+
+.ButtonGroup > * {
+	margin: 10px auto;
+	padding: 5px;
+}
+
+span.SummationGroup {
+    position: relative;
+    top: -6px;
 }

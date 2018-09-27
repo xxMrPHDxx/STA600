@@ -8,13 +8,15 @@
 </head>
 <body onload="onLoad();">
 	<div class="wrapper">
-		<table id="Data">
-		</table>
-		<button onclick="insertRow();">Insert Row</button>
-		<button onclick="insertColumn();">Insert Independent Variable</button>
-		<button onclick="findSum();">Find Sum</button>
-		<button onclick="findSumSquareCorrelated();">Find Sum Square</button>
-		<button onclick="findBeta();">Find Coefficient</button>
+		<table id="Data"></table>
+		<div class="ButtonGroup">
+			<button onclick="insertRow();">Insert Row</button>
+			<button onclick="insertColumn();">Insert Independent Variable</button>
+			<button onclick="findSum();">Find Sum</button>
+			<button onclick="findSumSquare();">Find Sum Square</button>
+			<button onclick="findBeta();">Find Coefficient</button>
+			<button onclick="showAnova();">ANOVA Table</button>
+		</div>
 		<div id="Output"></div>
 	</div>
 </body>

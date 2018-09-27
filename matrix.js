@@ -11,6 +11,13 @@ class Matrix {
 			}
 		}
 	}
+	reduce(callback,start=""){
+		let value = start;
+		this.forEach((a,row,col)=>{
+			value = callback(value,a,row,col);
+		});
+		return value;
+	}
 	map(callback){
 		this.forEach((cell,row,col,arr) => {
 			this.cell[row][col] = callback(cell,row,col,arr);
@@ -110,7 +117,6 @@ class Matrix {
 
 		let temp = new Matrix(inv.row,inv.col);
 		temp.map((_,i,j)=>inv.cell[i][j]);
-		console.log(temp);
 
 		let det = Matrix.det(m);
 		if(m.row != m.col || det == 0) throw new Error("Invalid operation! The matrix doesn't have an inverse");
